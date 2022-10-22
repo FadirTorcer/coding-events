@@ -7,32 +7,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Chris Bay
+ */
 @Controller
 @RequestMapping("events")
 public class EventController {
 
-    private static HashMap<String, String> events = new HashMap();
+    private static List<String> events = new ArrayList<>();
 
     @GetMapping
-    public String handleEvent (Model model) {
+    public String displayAllEvents(Model model) {
+        model.addAttribute("title", "All Events");
         model.addAttribute("events", events);
         return "events/index";
     }
 
-    // lives at /events/create
     @GetMapping("create")
-    public String renderCreateEventForm() {
+    public String displayCreateEventForm(Model model) {
+        model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
-    //lives at /events/create
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName, @RequestParam String eventDescription) {
-        events.put(eventName, eventDescription);
+    public String processCreateEventForm(@RequestParam String eventName) {
+        events.add(eventName);
         return "redirect:";
     }
 
